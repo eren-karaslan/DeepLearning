@@ -150,7 +150,7 @@ y_test=  y_test.reshape(-1,1)
 
 print(X_train.shape,y_train.shape,X_test.shape,y_test.shape)
 
-"""3)MODELLEME"""
+"""3)MODELING"""
 
 model=Sequential()
 
@@ -189,7 +189,7 @@ plt.ylim([0,max(plt.ylim())])
 plt.title('training and Validation Loss',fontsize=16)
 plt.show()
 
-"""4)Değerlendirme"""
+"""4)Evaluation"""
 
 loss = model.evaluate(X_test,y_test,batch_size=1)
 print("\nTest loss: %.1f%%" % (100.0 * loss))
