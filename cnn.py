@@ -92,10 +92,10 @@ def visualize_img(image_batch, label_batch):
 
 visualize_img(x,labels)
 
-"""3)VERİYİ HAZIRLAMA"""
+"""3)Data Preparing"""
 
 from PIL import Image
-#Verilen kurallara göre resimlerin bazı özelliklerini değişerek yeni fotoğraflar türetiriz
+#We derive new photos by changing some properties of the pictures according to the given rules
 train=ImageDataGenerator(horizontal_flip=True,
                          vertical_flip=True,
                          validation_split=0.1, #test ratio
@@ -108,7 +108,7 @@ train=ImageDataGenerator(horizontal_flip=True,
 test=ImageDataGenerator(rescale=1/255,
                         validation_split=0.1)
 
-#flow from directory ile görüntüleri tensorflow'a getiririz
+#images bring to tensorflow with by flow from directory 
 train_generator=train.flow_from_directory(directory=dir_path,
                                     target_size=(target_size),
                                     class_mode='categorical',
@@ -120,18 +120,18 @@ test_generator=test.flow_from_directory(directory=dir_path,
                                     class_mode='categorical', #Represents the class of a categorical variable. If it were binary classification, we would use the term "binary" instead of "categorical".
                                     subset='validation')
 
-"""4)MODELLEME(MODELING)
+"""4)MODELING
 
-4.1)Sıfırdan CNN Modeli Kurma
+4.1)Setting up CNN model
 
 
 *   Sequantial
-*   Evrişim Katmanı(Convolution Layer,Vonv2d)
-*   Havuzlama katmanı(Pooling Layer)
-*   Aktivasyon Fonksiyonu Katmanı
-*   Flattening Katmanı
-*   Dense Katmanı
-*   Dropout Katmanı
+*   Convolution Layer,Vonv2d
+*   Pooling Layer
+*   Activation Layer
+*   Flattening Layer
+*   Dense Layer
+*   Dropout Layer
 
 """
 
@@ -164,7 +164,7 @@ model.add(Dropout(rate=0.2))
 
 model.add(Dense(units=6 , activation='softmax')) #The reason for having 6 is that we are trying to classify the object into 6 different classes.
 
-"""4.2)Optimizasyon ve Değerlendirme Metriklerinin Ayarlanması"""
+"""4.2)Set up Optimization ve Evaluation Metrics"""
 
 model.compile(loss='categorical_crossentropy',
               optimizer='adam',
@@ -180,7 +180,7 @@ callbacks = [EarlyStopping(monitor='vall_loss' , patience=50 , verbose=1 , mode=
 #'Verbose' can take values 0, 1, or 2. 'Mode' can be min, max, or auto.
 #ModelCheckpoint helps us to save the best model.
 
-"""4.3)MODELİN EĞİTİLMESİ"""
+"""4.3)LEARNING OF MODEL"""
 
 history= model.fit_generator(generator=train_generator,
                              epochs=100,
@@ -192,7 +192,7 @@ history= model.fit_generator(generator=train_generator,
 #As the loss decreases, it indicates better performance.
 #Higher values of precision, recall, and accuracy indicate better performance as well.
 
-"""4.5)Accuarcy ve Loss Grafikleri"""
+"""4.5)Accuarcy ve Loss Graphs"""
 
 plt.figure(figsize=(20,5))
 plt.subplot(1,2,1)
